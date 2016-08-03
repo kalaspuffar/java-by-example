@@ -17,7 +17,7 @@ import java.util.HashMap;
  */
 public class PrintAnimals {
     public static void main(String[] args) {
-        List<Map<String,String>> animalData = new ArrayList<Map<String,String>>();
+        List<Map<String,String>> dataList = new ArrayList<Map<String,String>>();
 
         try {
             BufferedReader in = new BufferedReader(new FileReader("animals.csv"));
@@ -36,14 +36,24 @@ public class PrintAnimals {
 
                     dataRow.put(headerArray[i], dataArray[i]);
                 }
-                animalData.add(dataRow);
+                dataList.add(dataRow);
             }
 
-            for(Map<String,String> dataRow : animalData) {
-                for(String key : dataRow.keySet()) {
-                    System.out.println(key+"="+dataRow.get(key));
+            List<Animal> animalList = new ArrayList<Animal>();
+            for(Map<String,String> dataRow : dataList) {
+                if(!dataRow.containsKey("animal_type")) continue;
+                Animal animal = null;
+                if("dog".compareTo(dataRow.get("animal_type")) == 0) {
+                    animal = new Dog(dataRow);
                 }
-                System.out.println("----------------------------");
+                if("cat".compareTo(dataRow.get("animal_type")) == 0) {
+                    animal = new Cat(dataRow);
+                }
+                animalList.add(animal);
+            }
+
+            for(Animal animal : animalList) {
+                animal.print();
             }
         } catch(Exception e) {
             e.printStackTrace();

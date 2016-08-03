@@ -1,13 +1,18 @@
 package org.example.filehandling;
 
+import java.util.Map;
+
 public class Dog extends Animal {
     private int walks_per_day;
 
+    public Dog(Map<String,String> dataRow) {
+        super(dataRow);
+        if(!dataRow.containsKey("walks_per_day")) return;
+        this.walks_per_day = Integer.parseInt(dataRow.get("walks_per_day"));
+    }
+
     public Dog(String name, String birthday, String color, int weight, int walks_per_day) {
-        this.setName(name);
-        this.setBirthday(birthday);
-        this.setColor(color);
-        this.setWeight(weight);
+        super(name, birthday, color, weight);
         this.walks_per_day = walks_per_day;
     }
 

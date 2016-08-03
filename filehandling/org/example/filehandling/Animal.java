@@ -3,6 +3,7 @@ package org.example.filehandling;
 import java.text.SimpleDateFormat;
 import java.text.ParsePosition;
 import java.util.Date;
+import java.util.Map;
 
 public abstract class Animal {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -10,6 +11,28 @@ public abstract class Animal {
     private String color;
     private Date birthday;
     private float weight;
+
+    public Animal(Map<String,String> dataRow) {
+        if(dataRow.containsKey("name")) {
+            this.setName(dataRow.get("name"));
+        }
+        if(dataRow.containsKey("birthday")) {
+            this.setBirthday(dataRow.get("birthday"));
+        }
+        if(dataRow.containsKey("color")) {
+            this.setColor(dataRow.get("color"));
+        }
+        if(dataRow.containsKey("weight")) {
+            this.setWeight(Float.parseFloat(dataRow.get("weight")));
+        }
+    }
+
+    public Animal(String name, String birthday, String color, float weight) {
+        this.setName(name);
+        this.setBirthday(birthday);
+        this.setColor(color);
+        this.setWeight(weight);
+    }
 
     public String getName() {
         return name;
