@@ -23,6 +23,18 @@ public class Cat extends Animal {
         this.hairballs_per_day = hairballs_per_day;
     }
 
+    public int compareTo(Animal a) {
+        if(a instanceof Cat) {
+            if(this.hairballs_per_day > ((Cat)a).hairballs_per_day) {
+                return -1;
+            }
+            if(this.hairballs_per_day < ((Cat)a).hairballs_per_day) {
+                return 1;
+            }
+        }
+        return super.compareTo(a);
+    }
+
     public void print() {
         super.print();
         System.out.println("Number of hairballs per day: "+hairballs_per_day);

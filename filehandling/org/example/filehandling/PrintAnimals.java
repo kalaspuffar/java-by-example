@@ -7,14 +7,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 
-/**
- * Todo:
- * - Create cats and dogs representation
- * - Read file from disk
- * - Parse data and create a list
- * - (Maybe)Sort list depending on arguments
- */
 public class PrintAnimals {
     public static void main(String[] args) {
         List<Map<String,String>> dataList = new ArrayList<Map<String,String>>();
@@ -52,11 +47,25 @@ public class PrintAnimals {
                 animalList.add(animal);
             }
 
+            Collections.sort(animalList, new WeightCompare());
+
             for(Animal animal : animalList) {
                 animal.print();
             }
         } catch(Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static class WeightCompare implements Comparator<Animal> {
+        public int compare(Animal a, Animal b) {
+            if(a.getWeight() < b.getWeight()) {
+                return -1;
+            }
+            if(a.getWeight() > b.getWeight()) {
+                return 1;
+            }
+            return 0;
         }
     }
 }

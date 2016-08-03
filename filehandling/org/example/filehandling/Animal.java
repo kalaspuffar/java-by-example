@@ -5,7 +5,7 @@ import java.text.ParsePosition;
 import java.util.Date;
 import java.util.Map;
 
-public abstract class Animal {
+public abstract class Animal implements Comparable<Animal> {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private String name;
     private String color;
@@ -63,6 +63,10 @@ public abstract class Animal {
     }
     public void setWeight(float weight) {
         this.weight = weight;
+    }
+
+    public int compareTo(Animal a) {
+        return this.name.compareTo(a.name);
     }
 
     public void print() {
