@@ -1,0 +1,54 @@
+{
+    "invoiceHeader": {
+        "invoiceDate": "2001-12-24",
+        "invoiceNumber": "FD2000103"
+    },
+    "billTo": {
+        "name": {
+            "title": "Ms",
+            "first": "Uren",
+            "last": "Cabe"
+        },
+        "address1": "608-6893 Consectetuer Rd.",
+        "address2": "",
+        "address3": "",
+        "city": "Invercargill",
+        "state": "SI",
+        "zipCode": "84747",
+        "country": "Greece",
+        "email": "nisl@sitametfaucibus.net",
+        "phone": "05 87 22 53 11"
+    },
+    "shipTo": {
+        "sameAsBilling": true,
+    },
+    "shippingData": {
+        "shipNumber": "1Z093945969988001",
+        "salesRep": "Devon Bonilla",
+        "shipDate": "2002-01-01",
+        "shipVia": "UPS",
+        "terms": "Net 30",
+        "dueDate": "2002-01-10"
+    },
+    "notes": "",
+    "invoiceRows": [
+        {
+            "productId": "1000001105",
+            "description": "Noodles - Steamed Chow Mein",
+            "quantity": "90",
+            "unitPrice": "1,99"
+        },
+        {
+            "productId": "1000001113",
+            "description": "Tea - Honey Green Tea",
+            "quantity": "75",
+            "unitPrice": "30,72"
+        },
+        {
+            "productId": "1000001121",
+            "description": "Paper Towel Touchless",
+            "quantity": "195",
+            "unitPrice": "79,70"
+        }
+    ]
+}

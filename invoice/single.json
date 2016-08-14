@@ -1,0 +1,54 @@
+{
+    "invoiceHeader": {
+        "invoiceDate": "2016-02-28",
+        "invoiceNumber": "FD2000102"
+    },
+    "billTo": {
+        "name": {
+            "title": "Mr",
+            "first": "Brodie",
+            "last": "Bongiorno"
+        },
+        "address1": "6487 Round Barn Dell",
+        "address2": "",
+        "address3": "",
+        "city": "North Beach Haven",
+        "state": "New Jersey",
+        "zipCode": "08458-8584",
+        "country": "United States",
+        "email": "in@scelerisqueduiSuspendisse.ca",
+        "phone": "(012) 04757724"
+    },
+    "shipTo": {
+        "sameAsBilling": false,
+        "name": {
+            "title": "Mr",
+            "first": "Brodie",
+            "last": "Bongiorno"
+        },
+        "address1": "Ap #288-6005 Aliquam Rd.",
+        "address2": "",
+        "address3": "",
+        "city": "Groenlo",
+        "state": "Gelderland",
+        "zipCode": "16-102",
+        "country": "Qatar",
+    },
+    "shippingData": {
+        "shipNumber": "SN000101003",
+        "salesRep": "Enrique van Es",
+        "shipDate": "2016-03-10",
+        "shipVia": "Postal service",
+        "terms": "Net 7",
+        "dueDate": "2016-03-11"
+    },
+    "notes": "",
+    "invoiceRows": [
+        {
+            "productId": "1000001091",
+            "description": "Appetizer - Smoked Salmon / Dill",
+            "quantity": "2",
+            "unitPrice": "38,00"
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "invoiceHeader": {
+        "invoiceDate": "2016-01-20",
+        "invoiceNumber": "FD2000101"
+    },
+    "billTo": {
+        "name": {
+            "title": "Ms",
+            "first": "Julia",
+            "last": "Velandia Guenaga"
+        },
+        "address1": "Calle Azdad No. 1959",
+        "address2": "",
+        "address3": "",
+        "city": "",
+        "state": "Hato Mayor",
+        "zipCode": "90319",
+        "country": "Dominican Republic",
+        "phone": "061-964-7360",
+        "email": ""
+    },
+    "shipTo": {
+        "sameAsBilling": true,
+    },
+    "shippingData": {
+        "shipNumber": "SN000101002",
+        "salesRep": "Terry van der Waal",
+        "shipDate": "2016-01-21",
+        "shipVia": "Freight",
+        "terms": "Net 7",
+        "dueDate": "2016-01-23"
+    },
+    "notes": "",
+    "invoiceRows": []
+}
