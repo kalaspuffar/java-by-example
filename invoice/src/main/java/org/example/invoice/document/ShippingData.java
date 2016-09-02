@@ -1,6 +1,9 @@
 package org.example.invoice.document;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import org.json.simple.JSONObject;
 
 public class ShippingData {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -11,6 +14,10 @@ public class ShippingData {
 	private String shipVia;
 	private String terms;
 	private Date dueDate;
+
+    public ShippingData(JSONObject jsonShippingData) {
+
+    }
 
     public void setShipNumber(String shipNumber) {
         this.shipNumber = shipNumber;
@@ -25,9 +32,14 @@ public class ShippingData {
         return this.salesRep;
     }
     public void setShipDate(String shipDate) {
-        this.shipDate = sdf.parse(shipDate);
+    	try {
+        	this.shipDate = sdf.parse(shipDate);
+    	} catch(ParseException pe) {
+    		pe.printStackTrace();
+    		this.shipDate = null;
+    	}
     }
-    public String getShipDate() {
+    public String getShipDateString() {
         return sdf.format(this.shipDate);
     }
     public void setShipDate(Date shipDate) {
@@ -49,9 +61,14 @@ public class ShippingData {
         return this.terms;
     }
     public void setDueDate(String dueDate) {
-        this.dueDate = sdf.parse(dueDate);
+    	try {
+        	this.dueDate = sdf.parse(dueDate);
+    	} catch(ParseException pe) {
+    		pe.printStackTrace();
+    		this.dueDate = null;
+    	}
     }
-    public String getDueDate() {
+    public String getDueDateString() {
         return sdf.format(this.dueDate);
     }
     public void setDueDate(Date dueDate) {

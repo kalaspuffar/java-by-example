@@ -15,7 +15,9 @@ public class App
 	    		(JSONObject)JSONValue
 	    			.parse(new FileReader(new File("single.json")));
 
-	    	System.out.println(doc.get("notes"));
+	    	Invoice invoice = new Invoice(doc);
+
+            System.out.println(invoice.getNotes());
 
     	} catch (Exception e) {
     		e.printStackTrace();

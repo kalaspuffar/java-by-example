@@ -1,5 +1,7 @@
 package org.example.invoice.document;
 
+import org.json.simple.JSONObject;
+
 public class Address {
 	private String title;
 	private String first;
@@ -11,6 +13,10 @@ public class Address {
 	private String state;
 	private String zipCode;
 	private String country;
+
+	public Address(JSONObject jsonAddress) {
+
+	}
 
 	public void setTitle(String title) {
 		this.title = title;
