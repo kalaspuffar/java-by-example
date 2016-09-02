@@ -8,4 +8,14 @@ public class Invoice {
 	private List<InvoiceRow> rows = new ArrayList<InvoiceRow>();
 	private ShippingData shipData = null;
 	private String notes;
+
+    public void addRow(InvoiceRow row) {
+        this.rows.add(row);
+    }
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+    public String getNotes() {
+        return this.notes;
+    }
 }
