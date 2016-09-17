@@ -10,7 +10,18 @@ public class InvoiceRow {
 	private BigDecimal price;
 
     public InvoiceRow(JSONObject jsonInvoiceRow) {
-
+        if(jsonInvoiceRow.containsKey("productNumber")) {
+            this.setProductNumber((String)jsonInvoiceRow.get("productNumber"));
+        }
+        if(jsonInvoiceRow.containsKey("productDescription")) {
+            this.setProductDescription((String)jsonInvoiceRow.get("productDescription"));
+        }
+        if(jsonInvoiceRow.containsKey("quantity")) {
+            this.setQuantity((String)jsonInvoiceRow.get("quantity"));
+        }
+        if(jsonInvoiceRow.containsKey("price")) {
+            this.setPrice((String)jsonInvoiceRow.get("price"));
+        }
     }
 
 
@@ -26,6 +37,9 @@ public class InvoiceRow {
 	public String getProductDescription() {
 		return this.productDescription;
 	}
+	public void setQuantity(String quantity) {		
+		this.quantity = Double.parseDouble(quantity);
+	}	
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
 	}

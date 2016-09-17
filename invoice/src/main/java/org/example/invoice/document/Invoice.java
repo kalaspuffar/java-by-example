@@ -16,20 +16,20 @@ public class Invoice {
 		this.header = new Header(getJsonObjectFromDocument(doc, "invoiceHeader"));
 		this.billTo = new Address(getJsonObjectFromDocument(doc, "billTo"));
 		this.shipTo = new Address(getJsonObjectFromDocument(doc, "shipTo"));
-		this.shipData = new ShippingData(getJsonObjectFromDocument(doc, "shipData"));
+		this.shipData = new ShippingData(getJsonObjectFromDocument(doc, "shippingData"));
 		if(doc.containsKey("invoiceRows")) {
 			Object simpleInvoiceRowsObject = doc.get("invoiceRows");
 			if(simpleInvoiceRowsObject instanceof JSONArray) {
 				for(Object simpleInvRowObj : ((JSONArray)simpleInvoiceRowsObject)) {
 					if(simpleInvRowObj instanceof JSONObject) {
-						rows.add(new InvoiceRow((JSONObject)simpleInvRowObj));
+						addRow(new InvoiceRow((JSONObject)simpleInvRowObj));
 					}
 				}
 			}
 		}		
 		if(doc.containsKey("notes")) {
-			this.notes = (String)doc.get("notes");
-		}		
+			this.setNotes((String)doc.get("notes"));
+		}
 	}
 
 	private JSONObject getJsonObjectFromDocument(JSONObject doc, String key) {

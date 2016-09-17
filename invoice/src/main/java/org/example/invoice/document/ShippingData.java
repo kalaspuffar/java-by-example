@@ -16,7 +16,24 @@ public class ShippingData {
 	private Date dueDate;
 
     public ShippingData(JSONObject jsonShippingData) {
-
+        if(jsonShippingData.containsKey("shipNumber")) {
+            this.setShipNumber((String)jsonShippingData.get("shipNumber"));
+        }
+        if(jsonShippingData.containsKey("salesRep")) {
+            this.setSalesRep((String)jsonShippingData.get("salesRep"));
+        }
+        if(jsonShippingData.containsKey("shipDate")) {
+            this.setShipDate((String)jsonShippingData.get("shipDate"));
+        }
+        if(jsonShippingData.containsKey("shipVia")) {
+            this.setShipVia((String)jsonShippingData.get("shipVia"));
+        }
+        if(jsonShippingData.containsKey("terms")) {
+            this.setTerms((String)jsonShippingData.get("terms"));
+        }
+        if(jsonShippingData.containsKey("dueDate")) {
+            this.setDueDate((String)jsonShippingData.get("dueDate"));
+        }
     }
 
     public void setShipNumber(String shipNumber) {

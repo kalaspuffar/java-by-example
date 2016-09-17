@@ -11,9 +11,13 @@ public class Header {
 	private String invoiceNumber;
 
     public Header(JSONObject jsonHeader) {
-
+        if(jsonHeader.containsKey("invoiceDate")) {
+            this.setInvoiceDate((String)jsonHeader.get("invoiceDate"));
+        }
+        if(jsonHeader.containsKey("invoiceNumber")) {
+            this.setInvoiceNumber((String)jsonHeader.get("invoiceNumber"));
+        }
     }
-
 
     public void setInvoiceDate(String invoiceDate) {
     	try {

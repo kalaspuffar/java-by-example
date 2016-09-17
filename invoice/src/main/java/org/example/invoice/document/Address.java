@@ -15,7 +15,41 @@ public class Address {
 	private String country;
 
 	public Address(JSONObject jsonAddress) {
-
+        if(jsonAddress.containsKey("name")) {
+        	if(jsonAddress.get("name") instanceof JSONObject) {
+        		JSONObject jsonName = (JSONObject) jsonAddress.get("name");
+		        if(jsonName.containsKey("title")) {
+		            this.setTitle((String)jsonName.get("title"));
+		        }
+		        if(jsonName.containsKey("first")) {
+		            this.setFirst((String)jsonName.get("first"));
+		        }
+		        if(jsonName.containsKey("last")) {
+		            this.setLast((String)jsonName.get("last"));
+		        }        		
+        	}
+	    }
+        if(jsonAddress.containsKey("address1")) {
+            this.setAddress1((String)jsonAddress.get("address1"));
+        }
+        if(jsonAddress.containsKey("address2")) {
+            this.setAddress2((String)jsonAddress.get("address2"));
+        }
+        if(jsonAddress.containsKey("address3")) {
+            this.setAddress3((String)jsonAddress.get("address3"));
+        }
+        if(jsonAddress.containsKey("city")) {
+            this.setCity((String)jsonAddress.get("city"));
+        }
+        if(jsonAddress.containsKey("state")) {
+            this.setState((String)jsonAddress.get("state"));
+        }
+        if(jsonAddress.containsKey("zipCode")) {
+            this.setZipCode((String)jsonAddress.get("zipCode"));
+        }
+        if(jsonAddress.containsKey("country")) {
+            this.setCountry((String)jsonAddress.get("country"));
+        }
 	}
 
 	public void setTitle(String title) {
