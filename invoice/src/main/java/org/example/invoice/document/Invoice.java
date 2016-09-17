@@ -3,6 +3,11 @@ package org.example.invoice.document;
 import java.util.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.example.invoice.PDFPrinter;
+import java.io.IOException;
 
 public class Invoice {
 	private Header header = null;
@@ -40,6 +45,10 @@ public class Invoice {
 			}
 		}
 		return null;
+	}
+
+	public void printPDF(PDPageContentStream contents) throws IOException {
+		this.header.printPDF(contents);
 	}
 
 	public List<InvoiceRow> getRows() {

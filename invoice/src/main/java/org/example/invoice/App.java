@@ -30,30 +30,9 @@ public class App
 
             PDPage pdfPage = new PDPage();
             pdfDocument.addPage(pdfPage);
-
-            PDFont font = PDType1Font.HELVETICA_BOLD;
-
             PDPageContentStream contents = new PDPageContentStream(pdfDocument, pdfPage);
-            contents.beginText();
-            contents.setFont(font, 16);
-            contents.newLineAtOffset(120, 740);
-            contents.showText("Example Inc.");
-            contents.endText();
-            contents.beginText();
-            contents.setFont(font, 8);
-            contents.newLineAtOffset(120, 720);
-            contents.showText("Mainstreet bl 13 1st floor");
-            contents.endText();
-            contents.beginText();
-            contents.setFont(font, 8);
-            contents.newLineAtOffset(120, 710);
-            contents.showText("New York, 3453, New York, USA");
-            contents.endText();
-            contents.beginText();
-            contents.setFont(font, 8);
-            contents.newLineAtOffset(120, 700);
-            contents.showText("1-555-5757, www.example.com");
-            contents.endText();
+
+            invoice.printPDF(contents);
 
             PDImageXObject pdImage = PDImageXObject.createFromFile("logo.png", pdfDocument);
             final float width = 60f;

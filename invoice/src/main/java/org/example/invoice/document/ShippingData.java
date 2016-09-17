@@ -4,6 +4,10 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import org.json.simple.JSONObject;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.example.invoice.PDFPrinter;
 
 public class ShippingData {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

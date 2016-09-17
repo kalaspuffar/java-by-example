@@ -2,6 +2,10 @@ package org.example.invoice.document;
 
 import java.math.BigDecimal;
 import org.json.simple.JSONObject;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.example.invoice.PDFPrinter;
 
 public class InvoiceRow {
 	private String productNumber;
