@@ -5,6 +5,9 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
+import java.io.IOException;
+import java.awt.Color;
+import java.lang.StringBuilder;
 
 public class Address {
 	private String title;
@@ -56,6 +59,44 @@ public class Address {
         }
 	}
 
+	public void printPDF(PDPageContentStream contents, boolean rightSide) throws IOException {
+		PDFont font = PDType1Font.HELVETICA;
+        Color color = new Color(80, 80, 80);
+
+        int x = rightSide ? 400 : 120;
+
+        int y = 630;
+
+        PDFPrinter headerPrinter = new PDFPrinter(contents, font, 8);
+        headerPrinter.putText(x, y, rightSide ? "Bill to:" : "Ship to:");
+
+        y -= 10;
+        PDFPrinter addressPrinter = new PDFPrinter(contents, font, 8, color);
+        addressPrinter.putText(x, y, getFullName());
+        y -= 10;
+        addressPrinter.putText(x, y, getAddress1());
+        y -= 10;
+        if (hasAddress2()) {
+        	addressPrinter.putText(x, y, getAddress2());	
+	        y -= 10;
+        }        
+        if (hasAddress3()) {
+	        addressPrinter.putText(x, y, getAddress3());
+	        y -= 10;
+	    }
+        addressPrinter.putText(x, y, getZipCode()+" "+getCity());
+        y -= 10;
+        addressPrinter.putText(x, y, getState()+", "+getCountry());
+    }
+
+	public String getFullName() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getTitle()).append(" ");
+		sb.append(this.getFirst()).append(" ");
+		sb.append(this.getLast());
+		return sb.toString();
+	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -86,11 +127,18 @@ public class Address {
 	public String getAddress2() {
 		return this.address2;
 	}
+	public boolean hasAddress2() {
+		return this.address2 != null && !this.address2.isEmpty();
+	}
+
 	public void setAddress3(String address3) {
 		this.address3 = address3;
 	}
 	public String getAddress3() {
 		return this.address3;
+	}
+	public boolean hasAddress3() {
+		return this.address3 != null && !this.address3.isEmpty();
 	}
 	public void setCity(String city) {
 		this.city = city;

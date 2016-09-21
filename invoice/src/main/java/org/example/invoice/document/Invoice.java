@@ -49,6 +49,8 @@ public class Invoice {
 
 	public void printPDF(PDPageContentStream contents) throws IOException {
 		this.header.printPDF(contents);
+		this.shipTo.printPDF(contents, false);
+		this.billTo.printPDF(contents, true);
 	}
 
 	public List<InvoiceRow> getRows() {

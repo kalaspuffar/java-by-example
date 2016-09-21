@@ -50,9 +50,11 @@ public class Header {
     }
 
     public void printPDF(PDPageContentStream contents) throws IOException {        
-        PDFont font = PDType1Font.HELVETICA_BOLD;
-        PDFPrinter headerPrinter = new PDFPrinter(contents, font, 16);
+        PDFont headerFont = PDType1Font.HELVETICA_BOLD;
+        PDFPrinter headerPrinter = new PDFPrinter(contents, headerFont, 16);
         headerPrinter.putText(120, 740, "Example Inc.");
+
+        PDFont font = PDType1Font.HELVETICA;
         PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
         textPrinter.putText(120, 720, "Mainstreet bl 13 1st floor");
         textPrinter.putText(120, 710, "New York, 3453, New York, USA");
