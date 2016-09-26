@@ -20,7 +20,17 @@ public class Invoice {
 	public Invoice(JSONObject doc) {
 		this.header = new Header(getJsonObjectFromDocument(doc, "invoiceHeader"));
 		this.billTo = new Address(getJsonObjectFromDocument(doc, "billTo"));
-		this.shipTo = new Address(getJsonObjectFromDocument(doc, "shipTo"));
+
+		if(doc.containsKey("shipTo")) {
+			JSONObject shipToObj = (JSONObject)doc.get("shipTo");
+			if(shipToObj.containsKey("sameAsBilling") && ((Boolean)shipToObj.get("sameAsBilling")) == true) {
+				this.shipTo = this.billTo;
+			}
+		}
+
+		if(this.shipTo == null) {
+			this.shipTo = new Address(getJsonObjectFromDocument(doc, "shipTo"));	
+		}		
 		this.shipData = new ShippingData(getJsonObjectFromDocument(doc, "shippingData"));
 		if(doc.containsKey("invoiceRows")) {
 			Object simpleInvoiceRowsObject = doc.get("invoiceRows");
@@ -51,6 +61,7 @@ public class Invoice {
 		this.header.printPDF(contents);
 		this.shipTo.printPDF(contents, false);
 		this.billTo.printPDF(contents, true);
+		this.shipData.printPDF(contents);
 	}
 
 	public List<InvoiceRow> getRows() {

@@ -55,18 +55,18 @@ public class Header {
         headerPrinter.putText(120, 740, "Example Inc.");
 
         PDFont font = PDType1Font.HELVETICA;
-        PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
+        PDFPrinter textPrinter = new PDFPrinter(contents, font, 10);
         textPrinter.putText(120, 720, "Mainstreet bl 13 1st floor");
-        textPrinter.putText(120, 710, "New York, 3453, New York, USA");
-        textPrinter.putText(120, 700, "1-555-5757, www.example.com");
+        textPrinter.putText(120, 708, "New York, 3453, New York, USA");
+        textPrinter.putText(120, 696, "1-555-5757, www.example.com");
 
         Color color = new Color(200, 200, 200);
         PDFPrinter invoiceHeaderPrinter = new PDFPrinter(contents, font, 24, color);
         invoiceHeaderPrinter.putText(450, 740, "INVOICE");     
 
         textPrinter.putText(400, 710, "Invoice date:");
-        textPrinter.putText(400, 700, "Invoice number:");
+        textPrinter.putText(400, 698, "Invoice number:");
         textPrinter.putText(500, 710, this.getInvoiceDateString());
-        textPrinter.putText(500, 700, this.getInvoiceNumber());
+        textPrinter.putText(500, 698, this.getInvoiceNumber());
     }
 }

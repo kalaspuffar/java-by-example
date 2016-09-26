@@ -65,27 +65,27 @@ public class Address {
 
         int x = rightSide ? 400 : 120;
 
-        int y = 630;
+        int y = 660;
 
-        PDFPrinter headerPrinter = new PDFPrinter(contents, font, 8);
+        PDFPrinter headerPrinter = new PDFPrinter(contents, font, 10);
         headerPrinter.putText(x, y, rightSide ? "Bill to:" : "Ship to:");
 
-        y -= 10;
-        PDFPrinter addressPrinter = new PDFPrinter(contents, font, 8, color);
+        y -= 12;
+        PDFPrinter addressPrinter = new PDFPrinter(contents, font, 10, color);
         addressPrinter.putText(x, y, getFullName());
-        y -= 10;
+        y -= 12;
         addressPrinter.putText(x, y, getAddress1());
-        y -= 10;
+        y -= 12;
         if (hasAddress2()) {
         	addressPrinter.putText(x, y, getAddress2());	
-	        y -= 10;
+	        y -= 12;
         }        
         if (hasAddress3()) {
 	        addressPrinter.putText(x, y, getAddress3());
-	        y -= 10;
+	        y -= 12;
 	    }
         addressPrinter.putText(x, y, getZipCode()+" "+getCity());
-        y -= 10;
+        y -= 12;
         addressPrinter.putText(x, y, getState()+", "+getCountry());
     }
 
