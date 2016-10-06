@@ -65,7 +65,7 @@ public class ShippingData {
         headerPrinter.putText(510, headerY, "Due date");
 
         final int textY = 557;
-        PDFPrinter textPrinter = new PDFPrinter(contents, font, 10);
+        PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
         textPrinter.putText(80, textY, this.getShipNumber());
         textPrinter.putText(160, textY, this.getSalesRep());
         textPrinter.putText(280, textY, this.getShipDateString());

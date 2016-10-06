@@ -22,7 +22,7 @@ public class App
     	try {
 	    	JSONObject jsonDocument = 
 	    		(JSONObject)JSONValue
-	    			.parse(new FileReader(new File("single.json")));
+	    			.parse(new FileReader(new File("afew.json")));
 
 	    	Invoice invoice = new Invoice(jsonDocument);
 

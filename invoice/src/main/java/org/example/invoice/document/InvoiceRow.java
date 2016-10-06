@@ -1,11 +1,14 @@
 package org.example.invoice.document;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.json.simple.JSONObject;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
+import java.awt.Color;
+import java.io.IOException;
 
 public class InvoiceRow {
 	private String productNumber;
@@ -14,20 +17,62 @@ public class InvoiceRow {
 	private BigDecimal price;
 
     public InvoiceRow(JSONObject jsonInvoiceRow) {
-        if(jsonInvoiceRow.containsKey("productNumber")) {
-            this.setProductNumber((String)jsonInvoiceRow.get("productNumber"));
+        if(jsonInvoiceRow.containsKey("productId")) {
+            this.setProductNumber((String)jsonInvoiceRow.get("productId"));
         }
-        if(jsonInvoiceRow.containsKey("productDescription")) {
-            this.setProductDescription((String)jsonInvoiceRow.get("productDescription"));
+        if(jsonInvoiceRow.containsKey("description")) {
+            this.setProductDescription((String)jsonInvoiceRow.get("description"));
         }
         if(jsonInvoiceRow.containsKey("quantity")) {
             this.setQuantity((String)jsonInvoiceRow.get("quantity"));
         }
-        if(jsonInvoiceRow.containsKey("price")) {
-            this.setPrice((String)jsonInvoiceRow.get("price"));
+        if(jsonInvoiceRow.containsKey("unitPrice")) {
+            this.setPrice((String)jsonInvoiceRow.get("unitPrice"));
         }
     }
 
+    public void printPDF(PDPageContentStream contents, int rowY, boolean odd) throws IOException {        
+		Color fillColor = new Color(240, 240, 240);
+        Color strokeColor = new Color(100, 100, 100);
+        contents.setStrokingColor(strokeColor);
+        contents.setNonStrokingColor(fillColor);
+        if(odd) {
+	        contents.addRect(70, rowY, 500, 20);
+	        contents.stroke();
+        } else {
+	        contents.addRect(70, rowY, 500, 20);
+	        contents.fillAndStroke();
+        }
+        
+        PDFont font = PDType1Font.HELVETICA;
+        PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
+        textPrinter.putText(80, rowY+7, this.getProductNumber());
+        textPrinter.putText(160, rowY+7, this.getProductDescription());
+        textPrinter.putText(380, rowY+7, this.getQuantityString());
+        textPrinter.putText(440, rowY+7, this.getPriceString());
+        textPrinter.putText(510, rowY+7, this.getTotalString());
+    }
+
+    public String getTotalString() {
+    	BigDecimal printTotal = getTotal();
+    	printTotal.setScale(2, RoundingMode.HALF_EVEN);
+    	return printTotal.toString();
+   	}
+
+    public String getPriceString() {
+    	BigDecimal printPrice = getPrice();
+    	printPrice.setScale(2, RoundingMode.HALF_EVEN);
+    	return printPrice.toString();
+   	}
+
+    public String getQuantityString() {
+    	return Double.toString(quantity);
+   	}
+
+
+    public BigDecimal getTotal() {
+    	return this.price.multiply(new BigDecimal(quantity)); 
+    }
 
 	public void setProductNumber(String productNumber) {
 		this.productNumber = productNumber;
@@ -42,7 +87,7 @@ public class InvoiceRow {
 		return this.productDescription;
 	}
 	public void setQuantity(String quantity) {		
-		this.quantity = Double.parseDouble(quantity);
+		this.quantity = Double.parseDouble(quantity.replace(",", "."));
 	}	
 	public void setQuantity(double quantity) {
 		this.quantity = quantity;
@@ -54,7 +99,7 @@ public class InvoiceRow {
 		this.price = new BigDecimal(price);
 	}
 	public void setPrice(String price) {		
-		this.price = new BigDecimal(price);
+		this.price = new BigDecimal(price.replace(",", "."));
 	}
 	public void setPrice(BigDecimal price) {
 		this.price = price;

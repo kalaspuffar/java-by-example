@@ -7,6 +7,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
+import java.awt.Color;
 import java.io.IOException;
 
 public class Invoice {
@@ -62,6 +63,34 @@ public class Invoice {
 		this.shipTo.printPDF(contents, false);
 		this.billTo.printPDF(contents, true);
 		this.shipData.printPDF(contents);
+
+		printRowHeader(contents);
+
+		int rowY = 500;
+		boolean odd = true;
+		for (InvoiceRow invoiceRow : rows) {			
+			invoiceRow.printPDF(contents, rowY, odd);
+			rowY -= 20;
+			odd = !odd;
+		}
+	}
+	
+	public void printRowHeader(PDPageContentStream contents) throws IOException {
+        Color fillColor = new Color(230, 230, 230);
+        Color strokeColor = new Color(100, 100, 100);
+        contents.setStrokingColor(strokeColor);
+        contents.setNonStrokingColor(fillColor);
+        contents.addRect(70, 520, 500, 20);
+        contents.fillAndStroke();
+
+        final int headerY = 527;
+        PDFont font = PDType1Font.HELVETICA;
+        PDFPrinter headerPrinter = new PDFPrinter(contents, font, 12);
+        headerPrinter.putText(80, headerY, "Product no.");
+        headerPrinter.putText(160, headerY, "Description");
+        headerPrinter.putText(380, headerY, "Quantity");
+        headerPrinter.putText(440, headerY, "Unit price");
+        headerPrinter.putText(510, headerY, "Total");
 	}
 
 	public List<InvoiceRow> getRows() {
