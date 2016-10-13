@@ -31,26 +31,17 @@ public class InvoiceRow {
         }
     }
 
-    public void printPDF(PDPageContentStream contents, int rowY, boolean odd) throws IOException {        
-		Color fillColor = new Color(240, 240, 240);
+    public void printPDF(PDPageContentStream contents, int rowY) throws IOException {        
         Color strokeColor = new Color(100, 100, 100);
         contents.setStrokingColor(strokeColor);
-        contents.setNonStrokingColor(fillColor);
-        if(odd) {
-	        contents.addRect(70, rowY, 500, 20);
-	        contents.stroke();
-        } else {
-	        contents.addRect(70, rowY, 500, 20);
-	        contents.fillAndStroke();
-        }
         
         PDFont font = PDType1Font.HELVETICA;
         PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
         textPrinter.putText(80, rowY+7, this.getProductNumber());
         textPrinter.putText(160, rowY+7, this.getProductDescription());
-        textPrinter.putText(380, rowY+7, this.getQuantityString());
-        textPrinter.putText(440, rowY+7, this.getPriceString());
-        textPrinter.putText(510, rowY+7, this.getTotalString());
+        textPrinter.putTextToTheRight(420, rowY+7, this.getQuantityString());
+        textPrinter.putTextToTheRight(490, rowY+7, this.getPriceString());
+        textPrinter.putTextToTheRight(560, rowY+7, this.getTotalString());
     }
 
     public String getTotalString() {

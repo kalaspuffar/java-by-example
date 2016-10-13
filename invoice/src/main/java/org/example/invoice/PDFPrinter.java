@@ -30,4 +30,9 @@ public class PDFPrinter {
         contents.showText(text);
         contents.endText();		
 	}
+
+	public void putTextToTheRight(int x, int y, String text) throws IOException {
+		float widthText = (font.getStringWidth(text) / 1000f) * fontSize;
+		this.putText((int)Math.round(x - widthText), y, text);
+	}
 }

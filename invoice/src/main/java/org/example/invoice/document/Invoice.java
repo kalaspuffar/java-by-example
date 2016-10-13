@@ -66,13 +66,40 @@ public class Invoice {
 
 		printRowHeader(contents);
 
-		int rowY = 500;
-		boolean odd = true;
+		int rowY = 499;
+		printRowBackGround(contents, rowY, 16);
+
 		for (InvoiceRow invoiceRow : rows) {			
-			invoiceRow.printPDF(contents, rowY, odd);
+			invoiceRow.printPDF(contents, rowY);
+			rowY -= 20;
+		}
+	}
+
+	public void printRowBackGround(PDPageContentStream contents, int rowY, int numRows) throws IOException {
+        Color strokeColor = new Color(100, 100, 100);
+        contents.setStrokingColor(strokeColor);
+        Color fillColor = new Color(240, 240, 240);
+        contents.setNonStrokingColor(fillColor);
+
+		boolean odd = true;
+        for(int i=0; i<numRows; i++) {
+	        if(odd) {
+		        contents.addRect(71, rowY, 498, 20);
+		        contents.fill();
+	        }
+
+        	contents.moveTo(70, rowY);
+        	contents.lineTo(70, rowY+20);
+        	contents.moveTo(570, rowY);
+        	contents.lineTo(570, rowY+20);
+        	contents.stroke();
 			rowY -= 20;
 			odd = !odd;
-		}
+        }
+
+    	contents.moveTo(70, rowY+20);
+    	contents.lineTo(570, rowY+20);
+    	contents.stroke();
 	}
 	
 	public void printRowHeader(PDPageContentStream contents) throws IOException {
