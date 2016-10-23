@@ -73,6 +73,8 @@ public class Invoice {
 			invoiceRow.printPDF(contents, rowY);
 			rowY -= 20;
 		}
+
+		printFooter(contents);
 	}
 
 	public void printRowBackGround(PDPageContentStream contents, int rowY, int numRows) throws IOException {
@@ -84,12 +86,12 @@ public class Invoice {
 		boolean odd = true;
         for(int i=0; i<numRows; i++) {
 	        if(odd) {
-		        contents.addRect(71, rowY, 498, 20);
+		        contents.addRect(51, rowY, 518, 20);
 		        contents.fill();
 	        }
 
-        	contents.moveTo(70, rowY);
-        	contents.lineTo(70, rowY+20);
+        	contents.moveTo(50, rowY);
+        	contents.lineTo(50, rowY+20);
         	contents.moveTo(570, rowY);
         	contents.lineTo(570, rowY+20);
         	contents.stroke();
@@ -97,7 +99,7 @@ public class Invoice {
 			odd = !odd;
         }
 
-    	contents.moveTo(70, rowY+20);
+    	contents.moveTo(50, rowY+20);
     	contents.lineTo(570, rowY+20);
     	contents.stroke();
 	}
@@ -107,17 +109,46 @@ public class Invoice {
         Color strokeColor = new Color(100, 100, 100);
         contents.setStrokingColor(strokeColor);
         contents.setNonStrokingColor(fillColor);
-        contents.addRect(70, 520, 500, 20);
+        contents.addRect(50, 520, 520, 20);
         contents.fillAndStroke();
 
         final int headerY = 527;
         PDFont font = PDType1Font.HELVETICA;
         PDFPrinter headerPrinter = new PDFPrinter(contents, font, 12);
-        headerPrinter.putText(80, headerY, "Product no.");
+        headerPrinter.putText(60, headerY, "Product no.");
         headerPrinter.putText(160, headerY, "Description");
         headerPrinter.putText(380, headerY, "Quantity");
         headerPrinter.putText(440, headerY, "Unit price");
         headerPrinter.putText(510, headerY, "Total");
+	}
+
+	public void printFooter(PDPageContentStream contents) throws IOException {
+        Color strokeColor = new Color(100, 100, 100);
+        contents.setStrokingColor(strokeColor);
+        contents.addRect(50, 35, 370, 135);
+        contents.stroke();
+
+        PDFPrinter footerLabelPrinter = new PDFPrinter(contents, PDType1Font.HELVETICA_BOLD, 8);
+        PDFPrinter footerValuePrinter = new PDFPrinter(contents, PDType1Font.HELVETICA, 8);
+        footerLabelPrinter.putText(50, 172, "Notes");
+        int rowY = 160;
+        StringBuilder sb = new StringBuilder();
+        for(String s : this.getNotes().split(" ")) {
+        	if(footerValuePrinter.widthOfText(sb.toString() + " " + s) > 365) {
+	        	if(rowY < 50) {
+	        		sb.append("...");
+		        	footerValuePrinter.putText(55, rowY, sb.toString());
+		        	sb = new StringBuilder();
+		        	break;
+	        	}
+	        	footerValuePrinter.putText(55, rowY, sb.toString());        	
+	        	rowY -= 10;
+	        	sb = new StringBuilder();
+        	}        	
+        	sb.append(s);
+        	sb.append(" ");
+        }
+    	footerValuePrinter.putText(55, rowY, sb.toString());        	
 	}
 
 	public List<InvoiceRow> getRows() {

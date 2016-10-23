@@ -49,15 +49,15 @@ public class ShippingData {
         Color strokeColor = new Color(100, 100, 100);
         contents.setStrokingColor(strokeColor);
         contents.setNonStrokingColor(fillColor);
-        contents.addRect(70, 570, 500, 20);
+        contents.addRect(50, 570, 520, 20);
         contents.fillAndStroke();
-        contents.addRect(70, 550, 500, 20);
+        contents.addRect(50, 550, 520, 20);
         contents.stroke();
 
         final int headerY = 577;
         PDFont font = PDType1Font.HELVETICA;
         PDFPrinter headerPrinter = new PDFPrinter(contents, font, 12);
-        headerPrinter.putText(80, headerY, "Ship. number");
+        headerPrinter.putText(60, headerY, "Ship. number");
         headerPrinter.putText(160, headerY, "Sales Rep.");
         headerPrinter.putText(280, headerY, "Ship date");
         headerPrinter.putText(340, headerY, "Ship via");
@@ -66,7 +66,7 @@ public class ShippingData {
 
         final int textY = 557;
         PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
-        textPrinter.putText(80, textY, this.getShipNumber());
+        textPrinter.putText(60, textY, this.getShipNumber());
         textPrinter.putText(160, textY, this.getSalesRep());
         textPrinter.putText(280, textY, this.getShipDateString());
         textPrinter.putText(340, textY, this.getShipVia());

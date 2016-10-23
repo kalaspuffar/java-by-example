@@ -22,11 +22,9 @@ public class App
     	try {
 	    	JSONObject jsonDocument = 
 	    		(JSONObject)JSONValue
-	    			.parse(new FileReader(new File("afew.json")));
+	    			.parse(new FileReader(new File("single.json")));
 
 	    	Invoice invoice = new Invoice(jsonDocument);
-
-            System.out.println(invoice.getNotes());
 
             PDPage pdfPage = new PDPage();
             pdfDocument.addPage(pdfPage);

@@ -37,7 +37,7 @@ public class InvoiceRow {
         
         PDFont font = PDType1Font.HELVETICA;
         PDFPrinter textPrinter = new PDFPrinter(contents, font, 8);
-        textPrinter.putText(80, rowY+7, this.getProductNumber());
+        textPrinter.putText(60, rowY+7, this.getProductNumber());
         textPrinter.putText(160, rowY+7, this.getProductDescription());
         textPrinter.putTextToTheRight(420, rowY+7, this.getQuantityString());
         textPrinter.putTextToTheRight(490, rowY+7, this.getPriceString());
