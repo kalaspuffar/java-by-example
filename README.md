@@ -19,3 +19,4 @@ A video series where we build small implementations together.
 * [Part 7](https://youtu.be/7JGQmKb9c-A)
 * [Part 8](https://youtu.be/fuT8A3KfzTY)
 * [Part 9](https://youtu.be/vP5y7C2gnIQ)
+* [Part 10](https://youtu.be/wR9OnloZKRM)
