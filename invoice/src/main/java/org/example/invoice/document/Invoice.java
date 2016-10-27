@@ -8,6 +8,8 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
 import java.awt.Color;
+import java.math.RoundingMode;
+import java.math.BigDecimal;
 import java.io.IOException;
 
 public class Invoice {
@@ -69,13 +71,51 @@ public class Invoice {
 		int rowY = 499;
 		printRowBackGround(contents, rowY, 16);
 
-		for (InvoiceRow invoiceRow : rows) {			
+		BigDecimal totalCost = BigDecimal.ZERO;
+		for (InvoiceRow invoiceRow : rows) {		
 			invoiceRow.printPDF(contents, rowY);
+			totalCost = invoiceRow.addTotal(totalCost);
 			rowY -= 20;
-		}
+		}		
+
+		printSummery(contents, totalCost);
 
 		printFooter(contents);
 	}
+
+	public void printSummery(PDPageContentStream contents, BigDecimal totalCost) throws IOException {
+        Color strokeColor = new Color(100, 100, 100);
+        contents.setStrokingColor(strokeColor);
+        Color fillColor = new Color(240, 240, 240);
+        contents.setNonStrokingColor(fillColor);        
+
+        PDFPrinter summeryLabelPrinter = new PDFPrinter(contents, PDType1Font.HELVETICA_BOLD, 8);
+        PDFPrinter summeryValuePrinter = new PDFPrinter(contents, PDType1Font.HELVETICA, 12);
+
+    	BigDecimal subTotal = totalCost.multiply(new BigDecimal(0.8f));
+    	BigDecimal vatValue = totalCost.multiply(new BigDecimal(0.2f));
+    	subTotal = subTotal.setScale(2, RoundingMode.HALF_EVEN);    	
+    	vatValue = vatValue.setScale(2, RoundingMode.HALF_EVEN);
+    	totalCost = totalCost.setScale(2, RoundingMode.HALF_EVEN);
+
+    	int summeryStartY = 171;
+
+		summeryLabelPrinter.putText(451, summeryStartY, "Sub total");
+        contents.addRect(450, summeryStartY-17, 120, 16);
+        contents.stroke();
+        summeryValuePrinter.putTextToTheRight(566, summeryStartY-13, subTotal.toString() + " SEK");
+
+		summeryLabelPrinter.putText(451, summeryStartY - 30, "Vat");
+        contents.addRect(450, summeryStartY - 30 - 17, 120, 16);
+        contents.stroke();
+        summeryValuePrinter.putTextToTheRight(566, summeryStartY - 30 - 13, vatValue.toString() + " SEK");
+
+		summeryLabelPrinter.putText(451, summeryStartY - 60, "Total price");
+        contents.addRect(450, summeryStartY - 60 - 17, 120, 16);
+        contents.stroke();
+        summeryValuePrinter.putTextToTheRight(566, summeryStartY - 60 - 13, totalCost.toString() + " SEK");        
+	}
+
 
 	public void printRowBackGround(PDPageContentStream contents, int rowY, int numRows) throws IOException {
         Color strokeColor = new Color(100, 100, 100);

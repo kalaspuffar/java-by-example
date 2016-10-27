@@ -31,6 +31,10 @@ public class InvoiceRow {
         }
     }
 
+    public BigDecimal addTotal(BigDecimal totalCost) {
+    	return totalCost.add(this.getTotal());
+    }
+
     public void printPDF(PDPageContentStream contents, int rowY) throws IOException {        
         Color strokeColor = new Color(100, 100, 100);
         contents.setStrokingColor(strokeColor);

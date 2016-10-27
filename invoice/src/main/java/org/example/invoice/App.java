@@ -22,9 +22,14 @@ public class App
     	try {
 	    	JSONObject jsonDocument = 
 	    		(JSONObject)JSONValue
-	    			.parse(new FileReader(new File("single.json")));
+	    			.parse(new FileReader(new File("empty.json")));
 
 	    	Invoice invoice = new Invoice(jsonDocument);
+
+/*
+            "first": "季",
+            "last": "睿杰"
+*/
 
             PDPage pdfPage = new PDPage();
             pdfDocument.addPage(pdfPage);
