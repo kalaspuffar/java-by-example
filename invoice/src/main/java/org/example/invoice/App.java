@@ -12,7 +12,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 public class App 
 {
@@ -22,7 +21,7 @@ public class App
     	try {
 	    	JSONObject jsonDocument = 
 	    		(JSONObject)JSONValue
-	    			.parse(new FileReader(new File("empty.json")));
+	    			.parse(new FileReader(new File("afew.json")));
 
 	    	Invoice invoice = new Invoice(jsonDocument);
 
@@ -35,14 +34,7 @@ public class App
             pdfDocument.addPage(pdfPage);
             PDPageContentStream contents = new PDPageContentStream(pdfDocument, pdfPage);
 
-            invoice.printPDF(contents);
-
-            PDImageXObject pdImage = PDImageXObject.createFromFile("logo.png", pdfDocument);
-            final float width = 60f;
-            final float scale = width / pdImage.getWidth();
-            contents.drawImage(pdImage, 50, 720, width, pdImage.getHeight()*scale);
-
-            contents.close();
+            invoice.printPDF(pdfDocument, contents);            
 
             pdfDocument.save("single-invoice.pdf");
     	} catch (Exception e) {

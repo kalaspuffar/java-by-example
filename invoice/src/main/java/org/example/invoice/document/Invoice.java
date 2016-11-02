@@ -7,6 +7,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import java.awt.Color;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
@@ -19,6 +21,10 @@ public class Invoice {
 	private List<InvoiceRow> rows = new ArrayList<InvoiceRow>();
 	private ShippingData shipData = null;
 	private String notes;
+
+	private int maxRowSize = 23;
+	private int maxPageWithSummation = 16;
+	private int breakPoint = 12;
 
 	public Invoice(JSONObject doc) {
 		this.header = new Header(getJsonObjectFromDocument(doc, "invoiceHeader"));
@@ -60,27 +66,75 @@ public class Invoice {
 		return null;
 	}
 
-	public void printPDF(PDPageContentStream contents) throws IOException {
-		this.header.printPDF(contents);
+
+	private PDPageContentStream newPage(PDDocument pdfDocument, PDPageContentStream contents, int rowY, int numRows) throws IOException {
+		contents.close();
+		PDPage pdfPage = new PDPage();
+		pdfDocument.addPage(pdfPage);		
+		contents = new PDPageContentStream(pdfDocument, pdfPage);
+		this.header.printPDF(pdfDocument, contents);
+		printRowHeader(contents, rowY);
+		printRowBackGround(contents, rowY-21, numRows);		
+		return contents;
+	}
+
+
+	private boolean newPageRequired(int numPrintedRows, int rowsLeft) {
+		if(numPrintedRows >= this.maxRowSize) return true;
+		if(this.maxPageWithSummation < rowsLeft && rowsLeft < this.maxRowSize) {
+			if(numPrintedRows >= this.breakPoint) return true;
+		}
+		return false;
+	}
+
+	public void printPDF(PDDocument pdfDocument, PDPageContentStream contents) throws IOException {
+		this.header.printPDF(pdfDocument, contents);
 		this.shipTo.printPDF(contents, false);
 		this.billTo.printPDF(contents, true);
 		this.shipData.printPDF(contents);
 
-		printRowHeader(contents);
+		int rowY = 520;
+		int numPrintedRows = 0;
 
-		int rowY = 499;
-		printRowBackGround(contents, rowY, 16);
+		int rowsLeft = rows.size();
+
+		printRowHeader(contents, rowY);
+		printRowBackGround(contents, rowY-21, 
+			rowsLeft < this.maxPageWithSummation ? this.maxPageWithSummation : this.maxRowSize
+			);
 
 		BigDecimal totalCost = BigDecimal.ZERO;
-		for (InvoiceRow invoiceRow : rows) {		
+		for (InvoiceRow invoiceRow : rows) {	
+			numPrintedRows++;
+			rowY -= 20;
 			invoiceRow.printPDF(contents, rowY);
 			totalCost = invoiceRow.addTotal(totalCost);
-			rowY -= 20;
+			if(newPageRequired(numPrintedRows, rowsLeft)) {
+				rowsLeft -= numPrintedRows;
+				numPrintedRows = 0;
+				maxRowSize = 30;
+				maxPageWithSummation = 23;
+				breakPoint = 18;
+				rowY = 660;
+				contents = newPage(pdfDocument, contents, rowY,
+					rowsLeft < this.maxPageWithSummation ? this.maxPageWithSummation : this.maxRowSize
+					);
+
+			}
 		}		
 
-		printSummery(contents, totalCost);
+/*
+		First page with summation 16 rows
+		First page without summation 24 rows
+		Next page with summation 23 rows
+		Next page without summation 31 rows
 
+		16-24 = 12		
+		24-31 = 18
+*/
+		printSummery(contents, totalCost);
 		printFooter(contents);
+		contents.close();
 	}
 
 	public void printSummery(PDPageContentStream contents, BigDecimal totalCost) throws IOException {
@@ -144,22 +198,21 @@ public class Invoice {
     	contents.stroke();
 	}
 	
-	public void printRowHeader(PDPageContentStream contents) throws IOException {
+	public void printRowHeader(PDPageContentStream contents, int headerY) throws IOException {
         Color fillColor = new Color(230, 230, 230);
         Color strokeColor = new Color(100, 100, 100);
         contents.setStrokingColor(strokeColor);
         contents.setNonStrokingColor(fillColor);
-        contents.addRect(50, 520, 520, 20);
+        contents.addRect(50, headerY, 520, 20);
         contents.fillAndStroke();
 
-        final int headerY = 527;
         PDFont font = PDType1Font.HELVETICA;
         PDFPrinter headerPrinter = new PDFPrinter(contents, font, 12);
-        headerPrinter.putText(60, headerY, "Product no.");
-        headerPrinter.putText(160, headerY, "Description");
-        headerPrinter.putText(380, headerY, "Quantity");
-        headerPrinter.putText(440, headerY, "Unit price");
-        headerPrinter.putText(510, headerY, "Total");
+        headerPrinter.putText(60, headerY+7, "Product no.");
+        headerPrinter.putText(160, headerY+7, "Description");
+        headerPrinter.putText(380, headerY+7, "Quantity");
+        headerPrinter.putText(440, headerY+7, "Unit price");
+        headerPrinter.putText(510, headerY+7, "Total");
 	}
 
 	public void printFooter(PDPageContentStream contents) throws IOException {

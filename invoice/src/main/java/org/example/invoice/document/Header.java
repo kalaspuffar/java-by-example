@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import org.json.simple.JSONObject;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.awt.Color;
 import java.io.IOException;
 
@@ -49,7 +51,13 @@ public class Header {
         return this.invoiceNumber;
     }
 
-    public void printPDF(PDPageContentStream contents) throws IOException {        
+    public void printPDF(PDDocument pdfDocument, PDPageContentStream contents) throws IOException {        
+        PDImageXObject pdImage = PDImageXObject.createFromFile("logo.png", pdfDocument);
+        final float width = 60f;
+        final float scale = width / pdImage.getWidth();
+        contents.drawImage(pdImage, 50, 720, width, pdImage.getHeight()*scale);
+
+
         PDFont headerFont = PDType1Font.HELVETICA_BOLD;
         PDFPrinter headerPrinter = new PDFPrinter(contents, headerFont, 16);
         headerPrinter.putText(120, 740, "Example Inc.");
