@@ -20,3 +20,6 @@ A video series where we build small implementations together.
 * [Part 8](https://youtu.be/fuT8A3KfzTY)
 * [Part 9](https://youtu.be/vP5y7C2gnIQ)
 * [Part 10](https://youtu.be/wR9OnloZKRM)
+* [Part 11](https://youtu.be/-3exPu2OQnY)
+* [Part 12](https://youtu.be/uSkH92wjM7E)
+* [Part 13](https://youtu.be/0SOlKaA5-WY)
