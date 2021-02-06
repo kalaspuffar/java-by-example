@@ -9,6 +9,10 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.awt.Color;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
@@ -53,6 +57,71 @@ public class Invoice {
 		}		
 		if(doc.containsKey("notes")) {
 			this.setNotes((String)doc.get("notes"));
+		}
+	}
+
+	private JSONObject getElementToJson(Element e) {
+		JSONObject jsonObject = new JSONObject();
+		Elements tableRows = e.getElementsByTag("tr");
+		Element header = tableRows.get(0);
+		Element data = tableRows.get(1);
+
+		Elements headings = header.getElementsByTag("td");
+		Elements datas = data.getElementsByTag("td");
+		for (int i = 0; i < headings.size(); i++) {
+			jsonObject.put(headings.get(i).text(), datas.get(i).text());
+		}
+		return jsonObject;
+	}
+
+	private List<JSONObject> getElementToJsonMultiple(Element e) {
+		List<JSONObject> rows = new ArrayList<>();
+		Elements tableRows = e.getElementsByTag("tr");
+		Element header = tableRows.get(0);
+		Elements headings = header.getElementsByTag("td");
+		for(int j = 1; j < tableRows.size(); j++) {
+			JSONObject jsonObject = new JSONObject();
+			Elements datas = tableRows.get(j).getElementsByTag("td");
+			for (int i = 0; i < headings.size(); i++) {
+				jsonObject.put(headings.get(i).text(), datas.get(i).text());
+			}
+			rows.add(jsonObject);
+		}
+		return rows;
+	}
+
+	public Invoice(Document doc) {
+		Elements divs = doc.getElementsByTag("div");
+
+		boolean sameAsBill = false;
+		for (Element e : divs) {
+			if (e.getElementsByTag("h1").get(0).text().equals("invoiceHeader")) {
+				JSONObject header = getElementToJson(e);
+				this.header = new Header(header);
+				this.shipData = new ShippingData(header);
+				this.notes = (String) header.get("notes");
+				sameAsBill = header.get("sameAsBilling").equals("TRUE");
+			}
+			if (e.getElementsByTag("h1").get(0).text().equals("billTo")) {
+				JSONObject address = getElementToJson(e);
+				JSONObject name = new JSONObject();
+				name.put("title", address.get("title"));
+				name.put("first", address.get("first"));
+				name.put("last", address.get("last"));
+				address.put("name", name);
+				this.billTo = new Address(address);
+			}
+
+			if (e.getElementsByTag("h1").get(0).text().equals("rowData")) {
+				List<JSONObject> dataRows = getElementToJsonMultiple(e);
+				for (JSONObject jsonObject : dataRows) {
+					this.rows.add(new InvoiceRow(jsonObject));
+				}
+			}
+		}
+
+		if(sameAsBill) {
+			this.shipTo = this.billTo;
 		}
 	}
 

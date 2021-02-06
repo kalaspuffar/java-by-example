@@ -10,6 +10,8 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.example.invoice.PDFPrinter;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.jsoup.nodes.Element;
+
 import java.awt.Color;
 import java.io.IOException;
 
@@ -25,6 +27,9 @@ public class Header {
         if(jsonHeader.containsKey("invoiceNumber")) {
             this.setInvoiceNumber((String)jsonHeader.get("invoiceNumber"));
         }
+    }
+
+    public Header(Element e) {
     }
 
     public void setInvoiceDate(String invoiceDate) {
